@@ -40,4 +40,3 @@ jobs:
         EMER_PHONE2: ${{ secrets.Emer_phone2 }}
       run: |
         python report.py data_atschool.json "$STUID" "$PASSWORD" "$EMER_PERSON" "$EMER_RELA" "$EMER_PHONE"
-        python report.py data_atschool.json "$STUID2" "$PASSWORD2" "$EMER_PERSON2" "$EMER_RELA2" "$EMER_PHONE2"
