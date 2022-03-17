@@ -42,7 +42,7 @@ class Report(object):
             return False
 
         # 自动出校报备
-        ret = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy", allow_redirects=False)
+        ret = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i", allow_redirects=False)
         #print(ret.status_code)
         #print(ret.url)
         if (ret.status_code == 200):
