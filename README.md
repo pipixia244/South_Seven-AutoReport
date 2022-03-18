@@ -75,7 +75,7 @@ python report.py [DATA] [STUID] [PASSWORD] [EMER_PERSON] [EMER_RELA] [EMER_PHONE
 
 3. 将找到的 Data 除 `_token` （每次都会改变，所以不需要复制，脚本中会每次获取新的 token 并添加到要提交的数据中）外都复制下来，存放在 `data.json` 中，并参考示例文件转换为对应的格式。
 
-4. 通过push操作触发构建任务，检查上报数据是否正确。
+4. 通过push操作触发构建任务，检查上报数据是否正确。 
 
 ## 许可
 
