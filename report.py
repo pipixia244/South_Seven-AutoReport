@@ -128,7 +128,15 @@ class Report(object):
             REPORT_DATA = {
                 '_token': token2,
                 'start_date': start_date,
-                'end_date': end_date
+                'end_date': end_date,
+                'return_college[]': '东校区',
+                'return_college[]': '西校区',
+                'return_college[]': '南校区',
+                'return_college[]': '北校区',
+                'return_college[]': '中校区',
+                'return_college[]': '高新校区',
+                'return_college[]': '先研院',
+                'return_college[]': '国金院'
             }
 
             ret = session.post(url=REPORT_URL, data=REPORT_DATA)
