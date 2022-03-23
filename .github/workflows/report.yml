@@ -10,7 +10,7 @@ on:
     - cron: '10 4,11,17,23 * * *'
 
 jobs:
-  build:
+  report:
 
     runs-on: ubuntu-latest
 
