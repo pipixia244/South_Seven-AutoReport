@@ -27,5 +27,13 @@ jobs:
         pip install -r requirements.txt
         pip install pillow pytesseract requests
     - name: Run report script
+      env:
+        STUID: ${{ secrets.Stuid }}
+        PASSWORD: ${{ secrets.Password }}
+        EMER_PERSON: ${{ secrets.Emer_person }}
+        EMER_RELA: ${{ secrets.Emer_rela }}
+        EMER_PHONE: ${{ secrets.Emer_phone }}
+        DORM_BUILDING: ${{secrets.dorm_Building}}
+        DORM: ${{secrets.dorm}}
       run: |
-        python report.py data_atschool.json "$STUID" "$PASSWORD" "$EMER_PERSON" "$EMER_RELA" "$EMER_PHONE" "DORM_BUILDING" "DORM"
+        python report.py data_atschool.json "$STUID" "$PASSWORD" "$EMER_PERSON" "$EMER_RELA" "$EMER_PHONE" "$DORM_BUILDING" "$DORM"
