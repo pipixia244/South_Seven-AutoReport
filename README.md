@@ -6,7 +6,8 @@
 
 ## 更新记录
 - 新增：
-  - 20220321: 适配新的封校报备格式.
+  - 20220330：适配新打卡格式，添加了宿舍作为secret 
+  - 20220321：适配新的封校报备格式.
   - 20220319：适配新的健康打卡数据, <健康打卡>默认居住地为中校区. <封校报备>默认跨校区目的地为所有校区.
   - 20220318：更改<出校报备>功能, 适配新的<封校报备>功能.
   - 20210917：增加自动检测并报备<出校报备>功能.
@@ -17,7 +18,7 @@
   - 20200831：增强稳定性
   - 20200827：增加打卡失败重试功能，增加License
   - 20200826：为配合学校最新规定，切换至Github Actions实现一天三次打卡
- 
+
 ## 使用方法
 
 -2. **请自行修改report.yml，以适配自身需求。fork后原始的report.yml有两条python命令可以给两人打卡，如不需要请删除第二个以免一直报错。**
@@ -34,7 +35,7 @@
 
 4. 点击Actions选项卡，点击`I understand my workflows, go ahead and enable them`.
 
-5. 为保护隐私，需要将私人信息放入secrets中传递参数。点击Settings选项卡，点击左侧Secrets，点击New secret，创建名为`STUID`，值为自己学号的secret。用同样方法，创建名为`PASSWORD`，值为自己中国滑稽大学统一身份认证密码的secret。并接着创建`EMER_PERSON` `EMER_RELA` `EMER_PHONE`三个secret，分别代表打卡界面的紧急联系人，与ta的关系，紧急联系人电话。这几个值不会被公开。
+5. 为保护隐私，需要将私人信息放入secrets中传递参数。点击Settings选项卡，点击左侧Secrets，点击New secret，创建名为`STUID`，值为自己学号的secret。用同样方法，创建名为`PASSWORD`，值为自己中国滑稽大学统一身份认证密码的secret。并接着创建`EMER_PERSON` `EMER_RELA` `EMER_PHONE` `DORM_BUILDING` `DORM`五个secret，分别代表打卡界面的紧急联系人，与ta的关系，紧急联系人电话，宿舍楼，宿舍号。这几个值不会被公开。
 
    ![secrets](imgs/image-20200826215037042.png)
 
