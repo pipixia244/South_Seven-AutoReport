@@ -8,7 +8,6 @@ import pytz
 import re
 import sys
 import argparse
-
 import io
 import os
 from bs4 import BeautifulSoup
