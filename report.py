@@ -114,7 +114,7 @@ class Report(object):
             print("Report SUCCESSFUL!")
 
         # 自动出校报备
-        ret = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i")
+        ret = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i?t=3")
         # print(ret.status_code)
         # print(ret.url)
         if (ret.status_code == 200):
@@ -137,6 +137,7 @@ class Report(object):
                 'end_date': end_date,
                 'return_college[]': RETURN_COLLEGE,
                 't': 3,
+                'reason': '上课'
             }
 
             ret = session.post(url=REPORT_URL, data=REPORT_DATA)
