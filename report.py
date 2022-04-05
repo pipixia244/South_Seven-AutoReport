@@ -137,13 +137,9 @@ class Report(object):
                 'end_date': end_date,
                 'return_college[]': RETURN_COLLEGE,
                 't': 3,
-                # 'reason': '上课'
+                'reason': '上课'
             }
-
             ret = session.post(url=REPORT_URL, data=REPORT_DATA)
-            print('test error')
-            print(ret.status_code)
-            # print(ret.text)
 
         else:
             print("error! code "+ret.status_code)
