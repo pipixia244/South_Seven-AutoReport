@@ -114,7 +114,7 @@ class Report(object):
             print("Report SUCCESSFUL!")
 
         # 自动出校报备
-        ret = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i?t=3")
+        ret = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i")
         # print(ret.status_code)
         # print(ret.url)
         if (ret.status_code == 200):
