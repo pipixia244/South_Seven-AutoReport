@@ -64,7 +64,7 @@ pip install pillow pytesserart
 ```shell
 python report.py [DATA] [STUID] [PASSWORD] [EMER_PERSON] [EMER_RELA] [EMER_PHONE]
 ```
-其中，`[DATA]`是存放打卡数据的json文件的路径，`[STUID]`是学号，`[PASSWORD]`是统一身份认证的密码明文。EMER_PERSON EMER_RELA EMER_PHONE，分别代表打卡界面的紧急联系人，与ta的关系，紧急联系人电话。
+(注：在更新添加宿舍secret后，该指令还需添加宿舍号等信息，参考report.yml最后一行)其中，`[DATA]`是存放打卡数据的json文件的路径，`[STUID]`是学号，`[PASSWORD]`是统一身份认证的密码明文。EMER_PERSON EMER_RELA EMER_PHONE，分别代表打卡界面的紧急联系人，与ta的关系，紧急联系人电话。
 
 ## data.json 数据获取方法
 
