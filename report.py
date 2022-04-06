@@ -8,7 +8,6 @@ import pytz
 import re
 import sys
 import argparse
-
 import io
 import os
 from bs4 import BeautifulSoup
@@ -78,40 +77,15 @@ class Report(object):
         url = "https://weixine.ustc.edu.cn/2020/daliy_report"
         resp = session.post(url, data=data, headers=headers)
         print(resp)
-        data = session.get("https://weixine.ustc.edu.cn/2020").text
-        soup = BeautifulSoup(data, 'html.parser')
-        pattern = re.compile(
-            "202[0-9]-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2}")
-        token = soup.find(
-            "span", {"style": "position: relative; top: 5px; color: #666;"})
-        flag = False
-        if pattern.search(token.text) is not None:
-            date = pattern.search(token.text).group()
-            print("Latest report: " + date)
-            date = date + " +0800"
-            reporttime = datetime.datetime.strptime(
-                date, "%Y-%m-%d %H:%M:%S %z")
-            print("Reporttime : " + format(reporttime))
-            timenow = datetime.datetime.now(pytz.timezone('Asia/Shanghai'))
-            print("Nowtime : " + format(timenow))
-            delta = timenow - reporttime
-            delta_nega = reporttime - timenow
-            print("Delta is ")
-            print(delta)
-            print("Delta_Negative is ")
-            print(delta_nega)
-            if delta.seconds < 120 or delta_nega.seconds < 120:
-                flag = True
-            if delta.seconds < delta_nega.seconds:
-                print("{} second(s) before.".format(delta.seconds))
-            else:
-                print("{} second(s) before.".format(delta_nega.seconds))
-        if flag == False:
-            print("Report FAILED!")
-            print("健康打卡失败, 取消例行报备!")
-            return flag
+
+        res = session.get(
+            "https://weixine.ustc.edu.cn/2020/apply/daliy/i?t=3", allow_redirects=False)
+        if(res.status_code == 302):
+            print("report failed!")
+        elif(res.status_code == 200):
+            print("report success!")
         else:
-            print("Report SUCCESSFUL!")
+            print("unknown error, code: "+str(res.status_code))
 
         # 自动出校报备
         ret = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i")
