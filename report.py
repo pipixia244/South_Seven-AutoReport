@@ -28,7 +28,7 @@ DEFAULT_PIC = ['https://raw.githubusercontent.com/pipixia244/South_Seven-AutoRep
 
 
 class Report(object):
-    def __init__(self, stuid, password, data_path, emer_person, relation, emer_phone, dorm_building, dorm, _14days_pic, ankang_pic, gid, sign):
+    def __init__(self, stuid, password, data_path, emer_person, relation, emer_phone, dorm_building, dorm, _14days_pic, ankang_pic):
         self.stuid = stuid
         self.password = password
         self.data_path = data_path
@@ -38,8 +38,6 @@ class Report(object):
         self.dorm_building = dorm_building
         self.dorm = dorm
         self.pic = [_14days_pic, ankang_pic]
-        self.gid = gid
-        self.sign = sign
 
     def report(self):
 
@@ -128,14 +126,17 @@ class Report(object):
             # print(r.text)
             r = session.get(UPLOAD_PAGE_URL)
             x = re.search(r"""<input.*?name="_token".*?>""", r.text).group(0)
+            gid = re.search(r"""'gid': '(\d+)',""", r.text).group(1)
+            sign = re.search(
+                r"""'sign': '(.+)',""", r.text).group(1)
             re.search(r'value="(\w*)"', x).group(1)
 
             url = UPLOAD_IMAGE_URL
 
             payload = {
                 "_token": token,
-                "gid": self.gid,
-                "sign": self.sign,
+                "gid":  gid,
+                "sign":  sign,
                 "t": idx,
                 "id": f"WU_FILE_{idx-1}",
                 "name": f"{description}.jpg",
@@ -253,12 +254,10 @@ if __name__ == "__main__":
     parser.add_argument(
         '_14days_pic', help='14 days Big Data Trace Card', type=str)
     parser.add_argument('ankang_pic', help='An Kang Health Code', type=str)
-    parser.add_argument('gid', help="gid", type=str)
-    parser.add_argument('sign', help="sign", type=str)
     args = parser.parse_args()
     autorepoter = Report(stuid=args.stuid, password=args.password, data_path=args.data_path, emer_person=args.emer_person,
                          relation=args.relation, emer_phone=args.emer_phone, dorm_building=args.dorm_building, dorm=args.dorm,
-                         _14days_pic=args._14days_pic, ankang_pic=args.ankang_pic, gid=args.gid, sign=args.sign)
+                         _14days_pic=args._14days_pic, ankang_pic=args.ankang_pic)
     count = 5
     while count != 0:
         ret = autorepoter.report()

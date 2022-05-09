@@ -37,7 +37,5 @@ jobs:
         DORM: ${{secrets.dorm}}
         BIGDATA_URL : ${{ secrets.BIGDATA_URL }}
         ANKANG_URL : ${{ secrets.ANKANG_URL }}
-        GID : ${{secrets.GID}}
-        SIGN : ${{secrets.SIGN}}
       run: |
-        python report.py data_atschool.json "$STUID" "$PASSWORD" "$EMER_PERSON" "$EMER_RELA" "$EMER_PHONE" "$DORM_BUILDING" "$DORM" "$BIGDATA_URL" "$ANKANG_URL" "$GID" "$SIGN"
+        python report.py data_atschool.json "$STUID" "$PASSWORD" "$EMER_PERSON" "$EMER_RELA" "$EMER_PHONE" "$DORM_BUILDING" "$DORM" "$BIGDATA_URL" "$ANKANG_URL"
