@@ -95,8 +95,8 @@ class Report(object):
             print(f"Uploaded {description}: {r.json()['status']}")
 
     def deleteQRcode(self, session):
-        session.get("https://weixine.ustc.edu.cn/2020/upload/1/delete")
-        session.get("https://weixine.ustc.edu.cn/2020/upload/2/delete")
+        session.post("https://weixine.ustc.edu.cn/2020/upload/1/delete")
+        session.post("https://weixine.ustc.edu.cn/2020/upload/2/delete")
 
     def report(self):
 
