@@ -171,7 +171,7 @@ class Report(object):
 
             print("{}---{}".format(start_date, end_date))
 
-            REPORT_URL = "https://weixine.ustc.edu.cn/2020/apply/daliy/post"
+            REPORT_URL = "https://weixine.ustc.edu.cn/2020/apply/daliy/ipost"
             RETURN_COLLEGE = {'东校区', '西校区', '中校区', '南校区', '北校区'}
             REPORT_DATA = {
                 '_token': token2,
