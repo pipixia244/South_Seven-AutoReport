@@ -18,7 +18,7 @@ from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 CAS_RETURN_URL = "https://weixine.ustc.edu.cn/2020/caslogin"
 UPLOAD_PAGE_URL = "https://weixine.ustc.edu.cn/2020/upload/xcm"
-UPLOAD_IMAGE_URL = "https://weixine.ustc.edu.cn/2020/upload/{}/image"
+UPLOAD_IMAGE_URL = "https://weixine.ustc.edu.cn/2020img/api/upload_for_student"
 UPLOAD_INFO = [
     (1, "14-day Big Data Trace Card"),
     (2, "An Kang code"),
@@ -128,7 +128,7 @@ class Report(object):
             x = re.search(r"""<input.*?name="_token".*?>""", r.text).group(0)
             re.search(r'value="(\w*)"', x).group(1)
 
-            url = UPLOAD_IMAGE_URL.format(idx)
+            url = UPLOAD_IMAGE_URL
 
             payload = {
                 "_token": token,
