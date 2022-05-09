@@ -44,7 +44,7 @@ class Report(object):
         can_upload_code = 1
         r = session.get(UPLOAD_PAGE_URL)
         pos = r.text.find("每周可上报时间为周一凌晨0:00至周日中午12:00,其余时间将关闭相关功能。")
-        #print("position: "+str(pos))
+        # print("position: "+str(pos))
         if(pos != -1):
             print("当前处于不可上报时间，请换其他时间上传健康码。")
             can_upload_code = 0
@@ -54,7 +54,7 @@ class Report(object):
                 continue
             if(self.pic[idx - 1] == ''):
                 self.pic[idx - 1] = DEFAULT_PIC[idx - 1]
-            #print(self.pic[idx - 1])
+            # print(self.pic[idx - 1])
             ret = session.get(self.pic[idx - 1])
             blob = ret.content
             # print(len(blob))
@@ -65,11 +65,11 @@ class Report(object):
 
             # print(r.text)
             r = session.get(UPLOAD_PAGE_URL)
-            #x = re.search(r"""<input.*?name="_token".*?>""", r.text).group(0)
+            # x = re.search(r"""<input.*?name="_token".*?>""", r.text).group(0)
             gid = re.search(r"""'gid': '(\d+)',""", r.text).group(1)
             sign = re.search(
                 r"""'sign': '(.+)',""", r.text).group(1)
-            #re.search(r'value="(\w*)"', x).group(1)
+            # re.search(r'value="(\w*)"', x).group(1)
 
             url = UPLOAD_IMAGE_URL
 
@@ -98,6 +98,7 @@ class Report(object):
         headers_delete = session.headers
         headers_delete['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.100 Safari/537.36'
         headers_delete['x-csrf-token'] = token
+        headers_delete['origin'] = 'https://weixine.ustc.edu.cn'
         session.post("https://weixine.ustc.edu.cn/2020/upload/1/delete")
         session.post("https://weixine.ustc.edu.cn/2020/upload/2/delete")
 
@@ -201,7 +202,7 @@ class Report(object):
 
         elif(ret.status_code == 302):
             print("你这周已经报备过了.")
-            #老页面的判定, 新页面已经不需要
+            # 老页面的判定, 新页面已经不需要
         else:
             print("error! code "+ret.status_code)
             # 出错
