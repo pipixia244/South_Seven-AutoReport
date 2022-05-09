@@ -160,6 +160,7 @@ class Report(object):
             print("unknown error, code: "+str(res.status_code))
 
         # 自动出校报备
+        tempUpload = False
         ret = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i?t=3")
         # print(ret.status_code)
         if (ret.url == "https://weixine.ustc.edu.cn/2020/upload/xcm"):
