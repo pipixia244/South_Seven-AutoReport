@@ -95,12 +95,17 @@ class Report(object):
             print(f"Uploaded {description}: {r.json()['status']}")
 
     def deleteQRcode(self, session, token):
+        print("删除临时图片")
         headers_delete = session.headers
         headers_delete['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.100 Safari/537.36'
         headers_delete['x-csrf-token'] = token
         headers_delete['origin'] = 'https://weixine.ustc.edu.cn'
-        session.post("https://weixine.ustc.edu.cn/2020/upload/1/delete")
+        ret = session.post("https://weixine.ustc.edu.cn/2020/upload/1/delete")
+        print("删除1:", end="")
+        print(ret.status_code)
         session.post("https://weixine.ustc.edu.cn/2020/upload/2/delete")
+        print("删除2:", end="")
+        print(ret.status_code)
 
     def report(self):
 
