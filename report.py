@@ -39,7 +39,7 @@ class Report(object):
         self.dorm = dorm
         self.pic = [_14days_pic, ankang_pic]
 
-    def uploadQRcode(self, session):
+    def uploadQRcode(self, session, token):
         # 自动上传健康码
         can_upload_code = 1
         r = session.get(UPLOAD_PAGE_URL)
@@ -65,11 +65,11 @@ class Report(object):
 
             # print(r.text)
             r = session.get(UPLOAD_PAGE_URL)
-            x = re.search(r"""<input.*?name="_token".*?>""", r.text).group(0)
+            #x = re.search(r"""<input.*?name="_token".*?>""", r.text).group(0)
             gid = re.search(r"""'gid': '(\d+)',""", r.text).group(1)
             sign = re.search(
                 r"""'sign': '(.+)',""", r.text).group(1)
-            re.search(r'value="(\w*)"', x).group(1)
+            #re.search(r'value="(\w*)"', x).group(1)
 
             url = UPLOAD_IMAGE_URL
 
@@ -164,7 +164,7 @@ class Report(object):
         # print(ret.status_code)
         if (ret.url == "https://weixine.ustc.edu.cn/2020/upload/xcm"):
             print("未上传两码，开始上传占用两码。")
-            self.uploadQRcode(session)
+            self.uploadQRcode(session, token)
             tempUpload = True
         if (ret.status_code == 200):
             # 每日报备
