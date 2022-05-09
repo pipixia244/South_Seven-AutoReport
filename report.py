@@ -258,7 +258,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
     autorepoter = Report(stuid=args.stuid, password=args.password, data_path=args.data_path, emer_person=args.emer_person,
                          relation=args.relation, emer_phone=args.emer_phone, dorm_building=args.dorm_building, dorm=args.dorm,
-                         _14days_pic=args._14days_pic, ankang_pic=args.ankang_pic, gid=args.gid, size=args.sign)
+                         _14days_pic=args._14days_pic, ankang_pic=args.ankang_pic, gid=args.gid, sign=args.sign)
     count = 5
     while count != 0:
         ret = autorepoter.report()
