@@ -165,6 +165,8 @@ class Report(object):
         if (ret.url == "https://weixine.ustc.edu.cn/2020/upload/xcm"):
             print("未上传两码，开始上传占用两码。")
             self.uploadQRcode(session, token)
+            ret = session.get(
+                "https://weixine.ustc.edu.cn/2020/apply/daliy/i?t=3")
             tempUpload = True
         if (ret.status_code == 200):
             # 每日报备
