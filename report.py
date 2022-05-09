@@ -39,6 +39,65 @@ class Report(object):
         self.dorm = dorm
         self.pic = [_14days_pic, ankang_pic]
 
+    def uploadQRcode(self, session):
+        # 自动上传健康码
+        can_upload_code = 1
+        r = session.get(UPLOAD_PAGE_URL)
+        pos = r.text.find("每周可上报时间为周一凌晨0:00至周日中午12:00,其余时间将关闭相关功能。")
+        #print("position: "+str(pos))
+        if(pos != -1):
+            print("当前处于不可上报时间，请换其他时间上传健康码。")
+            can_upload_code = 0
+        for idx, description in UPLOAD_INFO:
+            if(can_upload_code == 0):
+                print(f"ignore {description}.")
+                continue
+            if(self.pic[idx - 1] == ''):
+                self.pic[idx - 1] = DEFAULT_PIC[idx - 1]
+            #print(self.pic[idx - 1])
+            ret = session.get(self.pic[idx - 1])
+            blob = ret.content
+            # print(len(blob))
+            # print(ret.status_code)
+            if blob == None or ret.status_code != 200:
+                print(f"ignore {description}.")
+                continue
+
+            # print(r.text)
+            r = session.get(UPLOAD_PAGE_URL)
+            x = re.search(r"""<input.*?name="_token".*?>""", r.text).group(0)
+            gid = re.search(r"""'gid': '(\d+)',""", r.text).group(1)
+            sign = re.search(
+                r"""'sign': '(.+)',""", r.text).group(1)
+            re.search(r'value="(\w*)"', x).group(1)
+
+            url = UPLOAD_IMAGE_URL
+
+            payload = {
+                "_token": token,
+                "gid":  gid,
+                "sign":  sign,
+                "t": idx,
+                "id": f"WU_FILE_{idx-1}",
+                "name": f"{description}.jpg",
+                "type": "image/jepg",
+                "lastModifiedDate": datetime.datetime.now().strftime("%a %b %d %Y %H:%M:%S GMT+0800 (China Standard Time)"),
+                "size": f"{len(blob)}",
+            }
+            payload_files = {"file": (payload["name"], blob)}
+            headers_upload = session.headers
+            headers_upload['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.100 Safari/537.36'
+            r = session.post(url, data=payload,
+                             files=payload_files, headers=headers_upload)
+            print(r)
+            # print(r.text)
+            r.raise_for_status()
+            print(f"Uploaded {description}: {r.json()['status']}")
+
+    def deleteQRcode(self, session):
+        session.get("https://weixine.ustc.edu.cn/2020/upload/1/delete")
+        session.get("https://weixine.ustc.edu.cn/2020/upload/2/delete")
+
     def report(self):
 
         # 统一验证登录
@@ -100,66 +159,13 @@ class Report(object):
         else:
             print("unknown error, code: "+str(res.status_code))
 
-        # 自动上传健康码
-        can_upload_code = 1
-        r = session.get(UPLOAD_PAGE_URL)
-        pos = r.text.find("每周可上报时间为周一凌晨0:00至周日中午12:00,其余时间将关闭相关功能。")
-        #print("position: "+str(pos))
-        if(pos != -1):
-            print("当前处于不可上报时间，请换其他时间上传健康码。")
-            can_upload_code = 0
-        for idx, description in UPLOAD_INFO:
-            if(can_upload_code == 0):
-                print(f"ignore {description}.")
-                continue
-            if(self.pic[idx - 1] == ''):
-                self.pic[idx - 1] = DEFAULT_PIC[idx - 1]
-            #print(self.pic[idx - 1])
-            ret = session.get(self.pic[idx - 1])
-            blob = ret.content
-            # print(len(blob))
-            # print(ret.status_code)
-            if blob == None or ret.status_code != 200:
-                print(f"ignore {description}.")
-                continue
-
-            # print(r.text)
-            r = session.get(UPLOAD_PAGE_URL)
-            x = re.search(r"""<input.*?name="_token".*?>""", r.text).group(0)
-            gid = re.search(r"""'gid': '(\d+)',""", r.text).group(1)
-            sign = re.search(
-                r"""'sign': '(.+)',""", r.text).group(1)
-            re.search(r'value="(\w*)"', x).group(1)
-
-            url = UPLOAD_IMAGE_URL
-
-            payload = {
-                "_token": token,
-                "gid":  gid,
-                "sign":  sign,
-                "t": idx,
-                "id": f"WU_FILE_{idx-1}",
-                "name": f"{description}.jpg",
-                "type": "image/jepg",
-                "lastModifiedDate": datetime.datetime.now().strftime("%a %b %d %Y %H:%M:%S GMT+0800 (China Standard Time)"),
-                "size": f"{len(blob)}",
-            }
-            payload_files = {"file": (payload["name"], blob)}
-            headers_upload = session.headers
-            headers_upload['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.100 Safari/537.36'
-            r = session.post(url, data=payload,
-                             files=payload_files, headers=headers_upload)
-            print(r)
-            # print(r.text)
-            r.raise_for_status()
-            print(f"Uploaded {description}: {r.json()['status']}")
-
         # 自动出校报备
         ret = session.get("https://weixine.ustc.edu.cn/2020/apply/daliy/i?t=3")
         # print(ret.status_code)
         if (ret.url == "https://weixine.ustc.edu.cn/2020/upload/xcm"):
-            print("未上传两码，请手动上传两码或杀了制定这个规则的壬的马。")
-            return True
+            print("未上传两码，开始上传占用两码。")
+            self.uploadQRcode(session)
+            tempUpload = True
         if (ret.status_code == 200):
             # 每日报备
             print("开始例行报备.")
@@ -193,7 +199,12 @@ class Report(object):
         else:
             print("error! code "+ret.status_code)
             # 出错
+            if(tempUpload):
+                self.deleteQRcode(session)
             return False
+
+        if tempUpload:
+            self.deleteQRcode(session)
         return True
 
     def login(self):
