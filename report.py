@@ -94,7 +94,10 @@ class Report(object):
             r.raise_for_status()
             print(f"Uploaded {description}: {r.json()['status']}")
 
-    def deleteQRcode(self, session):
+    def deleteQRcode(self, session, token):
+        headers_delete = session.headers
+        headers_delete['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.100 Safari/537.36'
+        headers_delete['x-csrf-token'] = token
         session.post("https://weixine.ustc.edu.cn/2020/upload/1/delete")
         session.post("https://weixine.ustc.edu.cn/2020/upload/2/delete")
 
@@ -203,11 +206,11 @@ class Report(object):
             print("error! code "+ret.status_code)
             # 出错
             if(tempUpload):
-                self.deleteQRcode(session)
+                self.deleteQRcode(session, token)
             return False
 
         if tempUpload:
-            self.deleteQRcode(session)
+            self.deleteQRcode(session, token)
         return True
 
     def login(self):
