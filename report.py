@@ -1,4 +1,4 @@
-#!/bin/python3
+#!/bin/python3 
 # encoding=utf8
 from selenium import webdriver
 from PIL import Image
