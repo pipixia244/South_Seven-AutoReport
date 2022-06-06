@@ -5,7 +5,7 @@ name: Auto-report action
 on: 
   push:
     branches:
-      - master
+      - master 
   schedule:
     - cron: '30 15,16,22 * * *'
 
